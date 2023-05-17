@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "./node_modules/@1creator/backend/.eslintrc"
+  ],
+  "rules": {
+    "array-bracket-newline": ["error", { "multiline": true }],
+    "object-curly-newline": ["error", { "multiline": true }],
+    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
+    "quote-props": [
+      "error",
+      "as-needed"
+    ]
+  }
+}

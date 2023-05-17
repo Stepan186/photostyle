@@ -1,0 +1,1 @@
+export type Action = 'view' | 'edit';
