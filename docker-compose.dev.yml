@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:rc-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+#  nginx:
+#    image: 1creator/nginx:nuxt-nest
+#    restart: unless-stopped
+#
+#  frontend:
+#    image: 1creator/photostyle.frontend
+#    restart: unless-stopped
+#    build:
+#      context: "./frontend"
+
+  backend:
+    image: 1creator/photostyle.backend
+    restart: unless-stopped
+    build:
+      context: "./backend"
+
+
+volumes:
+  database:
