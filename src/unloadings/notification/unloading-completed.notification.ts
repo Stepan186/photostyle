@@ -6,7 +6,7 @@ import {
 } from '../../notifications/channels/email/email-notification.channel';
 import { Unloading } from '../entities/unloading.entity';
 import { EntityDTO } from '@mikro-orm/core';
-import { createMailgen } from '../../email-utils/create-mailgen';
+import { createMailgen } from '../../email-utils/helpers/create-mailgen';
 
 export class UnloadingCompletedNotification extends BaseNotification implements IEmailNotification {
     unloading: EntityDTO<Unloading>;

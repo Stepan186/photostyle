@@ -4,7 +4,7 @@ import { Order, OrderId, OrderStatus } from './entities/order.entity';
 import { User } from '../../users/entities/user.entity';
 import { StoreOrderDto } from './dto/store-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { FilterQuery, MikroORM, QueryOrder } from '@mikro-orm/core';
+import { FilterQuery, MikroORM, ObjectQuery, QueryOrder, Ref } from '@mikro-orm/core';
 import { GetOrderDto } from './dto/get-order.dto';
 import { PricesService } from '../../prices/prices.service';
 import { DirectoriesService } from '../../directories/directories.service';
@@ -36,7 +36,7 @@ export class OrdersService {
     }
 
     async getMany(dto: GetOrdersDto, currentUser: User) {
-        const where: FilterQuery<Order> = {};
+        const where: FilterQuery<Order> = {  };
         const populate: string[] = [
             'project.usersPivot.permissions',
             'unloadings',
@@ -55,6 +55,10 @@ export class OrdersService {
             where.uuid = dto.uuid;
         }
 
+        if (dto.unloading) {
+            where.unloadings = dto.unloading;
+        }
+
         switch (dto.unloadingStatus) {
             case UnloadingStatus.Unloaded:
                 where.unloadings = { $exists: true };
@@ -66,8 +70,18 @@ export class OrdersService {
                 break;
         }
 
-        if (dto.project) {
-            where.project = dto.project;
+        if (dto.project || dto.projectGroup) {
+            const projectWhere = {} as ObjectQuery<Project>;
+
+            if (dto.project) {
+                projectWhere.id = dto.project;
+            }
+
+            if (dto.projectGroup) {
+                projectWhere.group = dto.projectGroup;
+            }
+
+            where.project = projectWhere;
         }
 
         if (dto.status) {
@@ -300,5 +314,13 @@ export class OrdersService {
         const order = await this.get({ uuid: dto.uuid }, currentUser);
         await this.repo.getEntityManager().removeAndFlush(order);
         return order;
+    }
+
+    async getOrderAgent(orderRef: Ref<Order>) {
+        const order = await this.repo.findOne(orderRef, {
+            populate: ['project.usersPivot.user.agent'],
+            populateWhere: { project: { usersPivot: { role: ProjectRole.Owner } } },
+        });
+        return order?.project.usersPivot.getItems()[0].user.agent;
     }
 }

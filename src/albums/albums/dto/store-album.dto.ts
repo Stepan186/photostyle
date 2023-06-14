@@ -74,6 +74,12 @@ export class AlbumPageDto extends PlainObject {
     @ValidateNested({ each: true })
     @IsArrayI18n()
     regions: AlbumPageRegionDto[];
+
+    @IsOptional()
+    @Type(() => AlbumPageFieldsDto)
+    @ValidateNested({ each: true })
+    @IsArrayI18n()
+    fields: AlbumPageFieldsDto[];
 }
 
 export class StoreAlbumDto extends PlainObject {
@@ -94,4 +100,9 @@ export class StoreAlbumDto extends PlainObject {
     @IsOptional()
     @IsNumberI18n()
     prepayment: number;
+}
+
+export class AlbumPageFieldsDto {
+    @IsStringI18n()
+    name: string;
 }

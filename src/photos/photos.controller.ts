@@ -17,7 +17,7 @@ export class PhotosController {
 
     @Post('/get')
     get(@Body() dto: GetPhotoDto, @TakeUser() user: User) {
-        return this.service.get(dto, user);
+        return this.service.get(dto, user, 'view');
     }
 
     // @Post('/getMany')

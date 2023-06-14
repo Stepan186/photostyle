@@ -1,4 +1,4 @@
-import { IsArrayI18n, IsDateStringI18n, IsNumberI18n, IsStringI18n } from '@1creator/backend';
+import { IsNumberI18n, IsStringI18n } from '@1creator/backend';
 import { IsOptional } from 'class-validator';
 
 export class GetOrderDto {
@@ -9,5 +9,4 @@ export class GetOrderDto {
     @IsOptional()
     @IsNumberI18n()
     project?: number;
-
 }

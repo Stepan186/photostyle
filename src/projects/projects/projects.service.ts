@@ -7,13 +7,14 @@ import { DeleteProjectDto } from './dto/delete-project.dto';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Project } from './entities/project.entity';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { FilterQuery, QueryOrder } from '@mikro-orm/core';
+import { FilterQuery, QueryOrder, Ref } from '@mikro-orm/core';
 import { ProjectUsersService } from '../project-users/project-users.service';
 import { User } from '../../users/entities/user.entity';
 import { omit } from '@1creator/common';
 import { Album } from '../../albums/albums/entities/album.entity';
 import { AlbumsService } from '../../albums/albums/albums.service';
 import { ProjectRole } from '../project-users/entities/project-role.enum';
+import { ProjectGroupsService } from "../project-groups/project-groups.service";
 
 @Injectable()
 export class ProjectsService {
@@ -24,7 +25,8 @@ export class ProjectsService {
         private albumsRepo: EntityRepository<Album>,
         private readonly em: EntityManager,
         @Inject(forwardRef(() => ProjectUsersService))
-        private readonly projectUserService: ProjectUsersService,
+        private readonly projectUsersService: ProjectUsersService,
+        private readonly projectGroupsService: ProjectGroupsService,
         private readonly albumsService: AlbumsService,
     ) {
     }
@@ -37,7 +39,7 @@ export class ProjectsService {
         const [items, count] = await this.repo.findAndCount(where, {
             limit: dto.limit,
             offset: dto.offset,
-            populate: ['usersPivot.role', 'albums'],
+            populate: ['usersPivot.role', 'group'],
             populateWhere: { usersPivot: { user: currentUser } },
             orderBy: { id: QueryOrder.DESC },
         });
@@ -58,7 +60,7 @@ export class ProjectsService {
                 id: dto.id,
                 usersPivot: { user: currentUser },
             },
-            { populate: ['usersPivot', 'albums.pages.background', 'albums.pages.regions.photo.watermarked', 'prices.priceList'] },
+            { populate: ['usersPivot', 'albums.pages.background', 'albums.pages.regions.photo.watermarked', 'prices.priceList', 'prepayments', 'group'] },
         );
         res.currentUser = currentUser;
         await this.fillDetails([res]);
@@ -94,7 +96,7 @@ export class ProjectsService {
 
     async store(dto: StoreProjectDto, currentUser: User) {
         const item = this.repo.create({
-            ...dto,
+            ...omit(dto, ['group']),
             password: String(Math.floor(Math.random() * (9999 - 1000) + 1000)),
             protectedPassword: String(Math.floor(Math.random() * (9999 - 1000) + 1000)),
             usersPivot: [
@@ -104,6 +106,12 @@ export class ProjectsService {
                 },
             ],
         });
+
+        if (dto.group) {
+            item.group = await this.projectGroupsService.get(dto.group, currentUser);
+            item.group.populated(true);
+        }
+
         await this.repo.getEntityManager().flush();
         return item;
     }
@@ -127,7 +135,7 @@ export class ProjectsService {
         currentUser: User,
     ): Promise<Project> {
         const item = await this.get(dto, currentUser);
-        item.assign(omit(dto, ['albums']));
+        item.assign(omit(dto, ['albums', 'group']));
 
         if (dto.albums) {
             const albums: Album[] = [];
@@ -140,6 +148,11 @@ export class ProjectsService {
             item.albums.set(albums);
         }
 
+        if (dto.group) {
+            item.group = await this.projectGroupsService.get(dto.group, currentUser);
+            item.group.populated(true);
+        }
+        console.log(item.group);
 
         await this.repo.getEntityManager().flush();
         return item;
@@ -201,5 +214,13 @@ export class ProjectsService {
                 size: i.size,
             };
         });
+    }
+
+    async getProjectAgent(projectRef: Ref<Project>) {
+        const project = await this.repo.findOne(projectRef, {
+            populate: ['usersPivot.user.agent'],
+            populateWhere: { usersPivot: { role: ProjectRole.Owner } },
+        });
+        return project?.usersPivot.getItems()[0].user.agent;
     }
 }

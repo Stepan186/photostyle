@@ -79,7 +79,7 @@ export class Order extends BaseEntity<Order, 'uuid'> {
     activePriceList?: PriceList;
 
     @Property({ type: 'decimal', precision: 7, scale: 2, default: 0, serializer: v => +v })
-    total: number;
+    total: string | number;
 
     @Property({ default: 0 })
     sale: number;

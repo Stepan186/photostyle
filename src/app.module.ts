@@ -19,11 +19,12 @@ import { CartsModule } from './carts/carts.module';
 import { BullModule } from '@nestjs/bull';
 import { WatermarksModule } from './watermarks/watermarks.module';
 import { UnloadingsModule } from './unloadings/unloadings.module';
-import { ClientsModule } from './clients/clients.module';
+import { ClientsModule } from './clients/clients/clients.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MikroORM } from '@mikro-orm/core';
 import { AgentsModule } from './agents/agents.module';
-import { AgentFeaturesModule } from './agents/agent-features/agent-features.module';
+import { ProjectPrepaymentsModule } from './project-prepayments/project-prepayments.module';
+import { OrderPaymentsModule } from './order-payments/order-payments.module';
 
 @Module({
     imports: [
@@ -59,7 +60,8 @@ import { AgentFeaturesModule } from './agents/agent-features/agent-features.modu
         UnloadingsModule,
         ClientsModule,
         AgentsModule,
-        AgentFeaturesModule,
+        ProjectPrepaymentsModule,
+        OrderPaymentsModule,
     ],
     controllers: [],
     providers: [],

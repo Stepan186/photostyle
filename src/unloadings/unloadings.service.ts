@@ -26,8 +26,8 @@ export class UnloadingsService {
     ) {
     }
 
-    async getMany(dto: PaginationDto, _currentUser: User) {
-        const where: FilterQuery<Unloading> = {};
+    async getMany(dto: PaginationDto, currentUser: User) {
+        const where: FilterQuery<Unloading> = {user: currentUser};
 
         const [items, count] = await this.repo.findAndCount(where, {
             populate: ['orders', 'upload'],

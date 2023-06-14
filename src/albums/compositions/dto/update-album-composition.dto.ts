@@ -1,5 +1,5 @@
 import { PlainObject } from '@mikro-orm/core';
-import { IsArray } from 'class-validator';
+import { IsArray, IsOptional } from 'class-validator';
 
 export class UpdateAlbumCompositionDto extends PlainObject {
     @IsArray()
@@ -8,3 +8,5 @@ export class UpdateAlbumCompositionDto extends PlainObject {
     @IsArray()
     regions: any;
 }
+
+// export class

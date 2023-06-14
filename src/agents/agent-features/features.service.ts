@@ -3,6 +3,8 @@ import { Feature, FeatureType } from './entites/feature.entity';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
+import { UpdateFeatureDto } from './dto/update-feature.dto';
+import { GetFeaturesDto } from './dto/get-features.dto';
 
 export const SYSTEM_FEATURES: Array<RequiredEntityData<Feature>> = [
     {
@@ -45,8 +47,14 @@ export class FeaturesService implements OnApplicationBootstrap {
         console.log('successfully synced features');
     }
 
-    getMany(dto: { id?: FeatureType[] }): Feature[] {
-        const permissions = SYSTEM_FEATURES.map((p) => this.repo.merge(p));
-        return dto.id ? permissions.filter(p => dto.id!.includes(p.id)) : permissions;
+    async getMany(dto: GetFeaturesDto) {
+        return await this.repo.find(dto);
+    }
+
+    async update(dto: UpdateFeatureDto) {
+        const feature = await this.repo.findOneOrFail({ id: dto.id });
+        feature.assign(dto);
+        await this.repo.getEntityManager().flush();
+        return feature;
     }
 }

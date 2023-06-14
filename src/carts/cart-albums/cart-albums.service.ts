@@ -11,6 +11,7 @@ import { Album } from '../../albums/albums/entities/album.entity';
 import { AlbumsService } from '../../albums/albums/albums.service';
 import { CartsService } from '../carts/carts.service';
 import { omit } from '@1creator/common';
+import { PagesFieldsValidationService } from './helpers/pages-fields-validation.service';
 
 @Injectable()
 export class CartAlbumsService {
@@ -23,6 +24,7 @@ export class CartAlbumsService {
         private albumRepo: EntityRepository<Album>,
         private readonly albumsService: AlbumsService,
         private readonly cartsService: CartsService,
+        private readonly pagesFieldsValidationService: PagesFieldsValidationService,
     ) {
     }
 
@@ -35,9 +37,13 @@ export class CartAlbumsService {
             throw new NotFoundException();
         }
 
+        const albumPages = album.pages.getItems();
+
+        const compositionFields = this.pagesFieldsValidationService.validateAndFilter(dto.pagesFields, albumPages);
+
         const cartAlbum = this.repo.create({
             ...dto,
-            composition: { album, owner: currentUser },
+            composition: { album, pagesFields: compositionFields, owner: currentUser },
         });
 
         cart.albums.add(cartAlbum);

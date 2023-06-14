@@ -2,15 +2,17 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Feature } from './entites/feature.entity';
 import { GetFeatureDto } from './dto/get-feature.dto';
-import { GetFeaturesInfoDto } from "./dto/get-features-info.dto";
-import { AgentFeature } from "./entites/agent-feature.entity";
-import { omit } from "@1creator/common";
-import { ToggleFeatureDto } from "./dto/toggle-feature.dto";
-import { AgentTransactionsService } from "../agent-transactions/agent-transactions.service";
+import { GetFeaturesInfoDto } from './dto/get-features-info.dto';
+import { AgentFeature } from './entites/agent-feature.entity';
+import { omit } from '@1creator/common';
+import { ToggleFeatureDto } from './dto/toggle-feature.dto';
+import { AgentTransactionsService } from '../agent-transactions/agent-transactions.service';
 import { ref } from '@mikro-orm/core';
-import { Agent } from "../agents/entities/agent.entity";
-import { createValidationException } from "@1creator/backend";
-import { BadRequestException } from "@nestjs/common";
+import { Agent } from '../agents/entities/agent.entity';
+import { createValidationException } from '@1creator/backend';
+import { BadRequestException } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
+import { LowBalanceNotification } from '../agents/notification/low-balance.notification';
 
 type FeaturesInfoResponse = {
     features: Array<Omit<Feature, 'agentFeatures'> & { enabledAt: Date | null }>,
@@ -37,16 +39,16 @@ export class AgentFeaturesService {
 
     async getMemoryUsage(agent: string) {
         const res: Array<{ size?: number }> = await this.featuresRepo.getEntityManager().execute(`
-            select sum(DISTINCT u.size)::int as size
+            select sum(DISTINCT u.size) ::int as size
             from project p
-                     left join directory d
-                               on d.project_id = p.id
-                     left join photo ph on d.id = ph.directory_id
-                     inner join "user" us on us.agent_uuid = '${agent}'
+                left join directory d
+            on d.project_id = p.id
+                left join photo ph on d.id = ph.directory_id
+                inner join "user" us on us.agent_uuid = '${agent}'
                 --                      inner join project_user pu
                 --                                 on pu.project_id = p.id and pu.user_uuid = us.uuid and
                 --                                    pu.role = 'owner'
-                     left join upload u on u.uuid = ph.original_uuid or u.uuid = ph.watermarked_uuid
+                left join upload u on u.uuid = ph.original_uuid or u.uuid = ph.watermarked_uuid
             group by p.id
         `);
         return res[0]?.size || 0;

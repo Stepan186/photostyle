@@ -38,7 +38,7 @@ export class ProjectUsersService {
     }
 
     async getMany(dto: GetProjectUsersDto, currentUser: User) {
-        await this.checkPermissions(ref(Project, dto.project), currentUser, ProjectPermissionType.ViewUsers);
+        await this.checkPermissions(ref(Project, dto.project), currentUser);
 
         const [items, count] = await this.repo.findAndCount({ project: dto.project }, {
             populate: ['user.image'],
@@ -94,13 +94,13 @@ export class ProjectUsersService {
         }
 
         if (project.password === dto.password) {
-            this.repo.create({
+            await this.repo.upsert({
                 project,
                 user: currentUser,
                 role: ProjectRole.Client,
             });
         } else if (project.protectedPassword === dto.password) {
-            this.repo.create({
+            await this.repo.upsert({
                 project,
                 user: currentUser,
                 role: ProjectRole.Organizer,
@@ -108,7 +108,6 @@ export class ProjectUsersService {
         } else {
             throw createValidationException({ password: ['Неверный пароль или проект'] });
         }
-        await this.repo.getEntityManager().flush();
         return this.projectsService.get({ id: +dto.project }, currentUser);
     }
 

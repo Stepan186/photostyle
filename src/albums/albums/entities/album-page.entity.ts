@@ -14,7 +14,7 @@ import { AlbumPageRegion } from './album-page-region.entity';
 
 @Entity()
 export class AlbumPage extends BaseEntity<AlbumPage, 'id'> {
-    [OptionalProps]: 'createdAt' | 'updatedAt' | 'album';
+    [OptionalProps]: 'createdAt' | 'updatedAt' | 'album' | 'fields';
 
     @PrimaryKey()
     id: number;
@@ -43,4 +43,6 @@ export class AlbumPage extends BaseEntity<AlbumPage, 'id'> {
     @Property({ onUpdate: () => new Date() })
     updatedAt = new Date();
 
+    @Property({ type: 'json', default: '[]' })
+    fields: { name: string }[];
 }

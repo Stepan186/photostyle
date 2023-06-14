@@ -6,155 +6,77 @@
   "tables": [
     {
       "columns": {
-        "uuid": {
-          "name": "uuid",
-          "type": "uuid",
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "host": {
+          "name": "host",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "gen_random_uuid()",
-          "mappedType": "uuid"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
           "mappedType": "string"
         },
-        "mail_address": {
-          "name": "mail_address",
+        "port": {
+          "name": "port",
           "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "legal_address": {
-          "name": "legal_address",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "bik": {
-          "name": "bik",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "ogrn": {
-          "name": "ogrn",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "director": {
-          "name": "director",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "inn": {
-          "name": "inn",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "kpp": {
-          "name": "kpp",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "correspondent_account": {
-          "name": "correspondent_account",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "bank_account": {
-          "name": "bank_account",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
+          "mappedType": "string"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
+        "encryption": {
+          "name": "encryption",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
+          "mappedType": "string"
         },
-        "fee": {
-          "name": "fee",
-          "type": "numeric(10,0)",
+        "mail_from": {
+          "name": "mail_from",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "precision": 10,
-          "scale": 0,
-          "default": "5",
-          "mappedType": "decimal"
+          "mappedType": "string"
+        },
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
-      "name": "agent",
+      "name": "email_setting",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "agent_pkey",
+          "keyName": "email_setting_pkey",
           "columnNames": [
-            "uuid"
+            "id"
           ],
           "composite": false,
           "primary": true,
@@ -163,100 +85,6 @@
       ],
       "checks": [],
       "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "uuid": {
-          "name": "uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "gen_random_uuid()",
-          "mappedType": "uuid"
-        },
-        "agent_uuid": {
-          "name": "agent_uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "change": {
-          "name": "change",
-          "type": "numeric(7,2)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "precision": 7,
-          "scale": 2,
-          "default": "0",
-          "mappedType": "decimal"
-        },
-        "balance": {
-          "name": "balance",
-          "type": "numeric(7,2)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "precision": 7,
-          "scale": 2,
-          "default": "0",
-          "mappedType": "decimal"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "agent_transaction",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "agent_transaction_pkey",
-          "columnNames": [
-            "uuid"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "agent_transaction_agent_uuid_foreign": {
-          "constraintName": "agent_transaction_agent_uuid_foreign",
-          "columnNames": [
-            "agent_uuid"
-          ],
-          "localTableName": "public.agent_transaction",
-          "referencedColumnNames": [
-            "uuid"
-          ],
-          "referencedTableName": "public.agent",
-          "updateRule": "cascade"
-        }
-      }
     },
     {
       "columns": {
@@ -327,294 +155,6 @@
     },
     {
       "columns": {
-        "agent_uuid": {
-          "name": "agent_uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "feature_id": {
-          "name": "feature_id",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "agent_feature",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "agent_feature_agent_uuid_feature_id_unique",
-          "columnNames": [
-            "agent_uuid",
-            "feature_id"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "agent_feature_pkey",
-          "columnNames": [
-            "agent_uuid",
-            "feature_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "agent_feature_agent_uuid_foreign": {
-          "constraintName": "agent_feature_agent_uuid_foreign",
-          "columnNames": [
-            "agent_uuid"
-          ],
-          "localTableName": "public.agent_feature",
-          "referencedColumnNames": [
-            "uuid"
-          ],
-          "referencedTableName": "public.agent",
-          "updateRule": "cascade"
-        },
-        "agent_feature_feature_id_foreign": {
-          "constraintName": "agent_feature_feature_id_foreign",
-          "columnNames": [
-            "feature_id"
-          ],
-          "localTableName": "public.agent_feature",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.feature",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "uuid": {
-          "name": "uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "gen_random_uuid()",
-          "mappedType": "uuid"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "invoice",
-            "alfaBank"
-          ],
-          "mappedType": "enum"
-        },
-        "table": {
-          "name": "table",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "agent"
-          ],
-          "mappedType": "enum"
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "created",
-            "pending",
-            "succeeded",
-            "failed",
-            "refunded"
-          ],
-          "mappedType": "enum"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "total": {
-          "name": "total",
-          "type": "numeric(7,2)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "precision": 7,
-          "scale": 2,
-          "default": "0",
-          "mappedType": "decimal"
-        },
-        "bank_payload": {
-          "name": "bank_payload",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "paid_at": {
-          "name": "paid_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "fee": {
-          "name": "fee",
-          "type": "numeric(7,2)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "precision": 7,
-          "scale": 2,
-          "default": "0",
-          "mappedType": "decimal"
-        },
-        "agent_uuid": {
-          "name": "agent_uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "uuid"
-        },
-        "agent_transaction_uuid": {
-          "name": "agent_transaction_uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "uuid"
-        }
-      },
-      "name": "payment",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "table"
-          ],
-          "composite": false,
-          "keyName": "payment_table_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "columnNames": [
-            "agent_transaction_uuid"
-          ],
-          "composite": false,
-          "keyName": "payment_agent_transaction_uuid_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "payment_pkey",
-          "columnNames": [
-            "uuid"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "payment_agent_uuid_foreign": {
-          "constraintName": "payment_agent_uuid_foreign",
-          "columnNames": [
-            "agent_uuid"
-          ],
-          "localTableName": "public.payment",
-          "referencedColumnNames": [
-            "uuid"
-          ],
-          "referencedTableName": "public.agent",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        },
-        "payment_agent_transaction_uuid_foreign": {
-          "constraintName": "payment_agent_transaction_uuid_foreign",
-          "columnNames": [
-            "agent_transaction_uuid"
-          ],
-          "localTableName": "public.payment",
-          "referencedColumnNames": [
-            "uuid"
-          ],
-          "referencedTableName": "public.agent_transaction",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
         "id": {
           "name": "id",
           "type": "varchar(255)",
@@ -639,6 +179,61 @@
       "indexes": [
         {
           "keyName": "project_permission_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "smtp_email",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "smtp_email_pkey",
           "columnNames": [
             "id"
           ],
@@ -751,6 +346,366 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "mail_address": {
+          "name": "mail_address",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "legal_address": {
+          "name": "legal_address",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "bik": {
+          "name": "bik",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "ogrn": {
+          "name": "ogrn",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "director": {
+          "name": "director",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "inn": {
+          "name": "inn",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "kpp": {
+          "name": "kpp",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "correspondent_account": {
+          "name": "correspondent_account",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "bank_account": {
+          "name": "bank_account",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "watermark_uuid": {
+          "name": "watermark_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "fee": {
+          "name": "fee",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "5",
+          "mappedType": "integer"
+        }
+      },
+      "name": "agent",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "watermark_uuid"
+          ],
+          "composite": false,
+          "keyName": "agent_watermark_uuid_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "agent_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "agent_watermark_uuid_foreign": {
+          "constraintName": "agent_watermark_uuid_foreign",
+          "columnNames": [
+            "watermark_uuid"
+          ],
+          "localTableName": "public.agent",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.upload",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "agent_uuid": {
+          "name": "agent_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "change": {
+          "name": "change",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "balance": {
+          "name": "balance",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "agent_transaction",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "agent_transaction_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "agent_transaction_agent_uuid_foreign": {
+          "constraintName": "agent_transaction_agent_uuid_foreign",
+          "columnNames": [
+            "agent_uuid"
+          ],
+          "localTableName": "public.agent_transaction",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.agent",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "agent_uuid": {
+          "name": "agent_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "feature_id": {
+          "name": "feature_id",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "agent_feature",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "agent_feature_pkey",
+          "columnNames": [
+            "agent_uuid",
+            "feature_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "agent_feature_agent_uuid_foreign": {
+          "constraintName": "agent_feature_agent_uuid_foreign",
+          "columnNames": [
+            "agent_uuid"
+          ],
+          "localTableName": "public.agent_feature",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.agent",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "agent_feature_feature_id_foreign": {
+          "constraintName": "agent_feature_feature_id_foreign",
+          "columnNames": [
+            "feature_id"
+          ],
+          "localTableName": "public.agent_feature",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.feature",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {
@@ -895,15 +850,6 @@
           ],
           "composite": false,
           "keyName": "user_email_unique",
-          "primary": false,
-          "unique": true
-        },
-        {
-          "columnNames": [
-            "agent_uuid"
-          ],
-          "composite": false,
-          "keyName": "user_agent_uuid_unique",
           "primary": false,
           "unique": true
         },
@@ -1503,6 +1449,30 @@
           "nullable": false,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "prepayment_balance": {
+          "name": "prepayment_balance",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "prepayment_used": {
+          "name": "prepayment_used",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
         },
         "invite_uuid": {
           "name": "invite_uuid",
@@ -2609,6 +2579,278 @@
     },
     {
       "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "mappedType": "uuid"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "invoice",
+            "online"
+          ],
+          "mappedType": "enum"
+        },
+        "table": {
+          "name": "table",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "agent",
+            "order",
+            "project_prepayment"
+          ],
+          "mappedType": "enum"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "created",
+            "pending",
+            "succeeded",
+            "failed",
+            "refunded"
+          ],
+          "mappedType": "enum"
+        },
+        "user_uuid": {
+          "name": "user_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "total": {
+          "name": "total",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "bank_payload": {
+          "name": "bank_payload",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "paid_at": {
+          "name": "paid_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "order_uuid": {
+          "name": "order_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "fee": {
+          "name": "fee",
+          "type": "numeric(7,2)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "precision": 7,
+          "scale": 2,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "agent_uuid": {
+          "name": "agent_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "agent_transaction_uuid": {
+          "name": "agent_transaction_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "payment",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "table"
+          ],
+          "composite": false,
+          "keyName": "payment_table_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "agent_transaction_uuid"
+          ],
+          "composite": false,
+          "keyName": "payment_agent_transaction_uuid_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "payment_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "payment_user_uuid_foreign": {
+          "constraintName": "payment_user_uuid_foreign",
+          "columnNames": [
+            "user_uuid"
+          ],
+          "localTableName": "public.payment",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "payment_order_uuid_foreign": {
+          "constraintName": "payment_order_uuid_foreign",
+          "columnNames": [
+            "order_uuid"
+          ],
+          "localTableName": "public.payment",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.order",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "payment_project_id_foreign": {
+          "constraintName": "payment_project_id_foreign",
+          "columnNames": [
+            "project_id"
+          ],
+          "localTableName": "public.payment",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.project",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "payment_agent_uuid_foreign": {
+          "constraintName": "payment_agent_uuid_foreign",
+          "columnNames": [
+            "agent_uuid"
+          ],
+          "localTableName": "public.payment",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.agent",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "payment_agent_transaction_uuid_foreign": {
+          "constraintName": "payment_agent_transaction_uuid_foreign",
+          "columnNames": [
+            "agent_transaction_uuid"
+          ],
+          "localTableName": "public.payment",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.agent_transaction",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
         "order_uuid": {
           "name": "order_uuid",
           "type": "uuid",
@@ -2969,6 +3211,7 @@
             "uuid"
           ],
           "referencedTableName": "public.user",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "cart_project_id_foreign": {
@@ -3296,6 +3539,16 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "fields": {
+          "name": "fields",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'[]'",
+          "mappedType": "json"
         }
       },
       "name": "album_page",
@@ -3478,6 +3731,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "uuid"
+        },
+        "pages_fields": {
+          "name": "pages_fields",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'[]'",
+          "mappedType": "json"
         }
       },
       "name": "album_composition",
@@ -3505,6 +3768,7 @@
             "id"
           ],
           "referencedTableName": "public.album",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "album_composition_owner_uuid_foreign": {
@@ -3517,6 +3781,7 @@
             "uuid"
           ],
           "referencedTableName": "public.user",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

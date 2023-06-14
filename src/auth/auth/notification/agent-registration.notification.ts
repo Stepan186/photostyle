@@ -4,7 +4,7 @@ import {
     IEmailNotification,
     IMailNotifiable,
 } from '../../../notifications/channels/email/email-notification.channel';
-import { createMailgen } from '../../../email-utils/create-mailgen';
+import { createMailgen } from '../../../email-utils/helpers/create-mailgen';
 import { User } from '../../../users/entities/user.entity';
 
 export class AgentRegistrationNotification extends BaseNotification implements IEmailNotification {

@@ -3,8 +3,8 @@ import { AgentFeaturesController } from './agent-features.controller';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Feature } from './entites/feature.entity';
 import { AgentFeaturesService } from './agent-features.service';
-import { AgentFeature } from "./entites/agent-feature.entity";
-import { AgentTransactionsModule } from "../agent-transactions/agent-transactions.module";
+import { AgentFeature } from './entites/agent-feature.entity';
+import { AgentTransactionsModule } from '../agent-transactions/agent-transactions.module';
 import { FeaturesService } from './features.service';
 
 @Module({

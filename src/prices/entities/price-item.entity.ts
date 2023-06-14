@@ -1,4 +1,13 @@
-import { BaseEntity, Collection, Entity, ManyToMany, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+    BaseEntity,
+    Collection,
+    Entity,
+    ManyToMany,
+    ManyToOne,
+    OptionalProps,
+    PrimaryKey,
+    Property,
+} from '@mikro-orm/core';
 import { PriceList } from './price-list.entity';
 import { Upload } from '../../uploads/entities/upload.entity';
 

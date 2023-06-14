@@ -34,12 +34,8 @@ export class CartPhotosService {
         const cartPhoto = cart.photos.getItems().find(i => i.photo.id === dto.photo && i.priceItem.id === dto.priceItem);
 
         if (cartPhoto) {
-            if (dto.count > 0) {
-                cartPhoto.count = dto.count;
-            } else {
-                cart.photos.remove(cartPhoto);
-            }
-        } else if (dto.count > 0) {
+            cartPhoto.count = dto.count;
+        } else if (dto.count >= 0) {
             const newPhoto = this.cartPhotoRepo.create({
                 count: dto.count,
                 photo,
@@ -47,7 +43,7 @@ export class CartPhotosService {
                 cart,
             });
             cart.photos.add(newPhoto);
-            this.cartPhotoRepo.populate(newPhoto, ['priceItem', 'photo']);
+            await this.cartPhotoRepo.populate(newPhoto, ['priceItem', 'photo.directory.disabledPriceItems']);
         }
 
         this.cartRepo.getEntityManager().flush();

@@ -1,4 +1,12 @@
-import { IsArrayI18n, IsDateStringI18n, IsInI18n, IsIntI18n, IsUuidI18n, PaginationDto } from '@1creator/backend';
+import {
+    IsArrayI18n,
+    IsDateStringI18n,
+    IsInI18n,
+    IsIntI18n,
+    IsNumberI18n,
+    IsUuidI18n,
+    PaginationDto,
+} from '@1creator/backend';
 import { IsIn, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { OrderStatus } from '../entities/order.entity';
@@ -23,6 +31,14 @@ export class GetOrdersDto extends PaginationDto {
     @Transform(t => [t.value].flat())
     @IsArrayI18n()
     project?: number[];
+
+    @IsOptional()
+    @IsNumberI18n()
+    projectGroup?: number;
+
+    @IsOptional()
+    @IsNumberI18n()
+    unloading?: number;
 
     @IsOptional()
     @IsString({ each: true })

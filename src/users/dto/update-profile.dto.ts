@@ -1,53 +1,6 @@
-import { IsOptional, IsUUID, MinLength, ValidateIf, ValidateNested } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { IsOptional, IsUUID, MinLength, ValidateIf } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { IsSame, IsStringI18n, LengthI18n } from '@1creator/backend';
-import { PlainObject } from "@mikro-orm/core";
-
-export class AgentDto extends PlainObject {
-    @IsOptional()
-    @IsStringI18n()
-    name?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    mailAddress?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    legalAddress?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    email?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    bik?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    ogrn?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    director?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    inn?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    kpp?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    correspondentAccount?: string;
-
-    @IsOptional()
-    @IsStringI18n()
-    bankAccount?: string;
-}
 
 export class UpdateProfileDto {
     @IsOptional()
@@ -78,11 +31,6 @@ export class UpdateProfileDto {
     @IsOptional()
     @IsUUID()
     image: string;
-
-    @IsOptional()
-    @Type(() => AgentDto)
-    @ValidateNested()
-    agent: AgentDto;
 
     @IsOptional()
     @MinLength(6, { message: 'Длина пароля должна быть не менее 6 символов.' })

@@ -9,10 +9,17 @@ export class AgentGuard extends SilentAuthGuard {
         const request: { user?: User, body: Record<string, any> } = context.switchToHttp().getRequest();
         const user = request.user;
 
-        if (user?.isAdmin) {
+        if (!user) {
+            return false;
+        }
+
+        if (user.isAdmin) {
+            if (!request.body.agent) {
+                request.body.agent = user.agent?.uuid;
+            }
             return true;
-        } else if (user?.isAgent && user.agent) {
-            request.body.agent = user.agent.uuid;
+        } else if (user.isAgent) {
+            request.body.agent = user.agent?.uuid;
             return true;
         } else {
             return false;

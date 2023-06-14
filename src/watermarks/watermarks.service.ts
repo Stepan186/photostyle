@@ -5,6 +5,7 @@ import { Queue } from 'bull';
 import { User } from '../users/entities/user.entity';
 import { Photo } from '../photos/entities/photo.entity';
 import { IWatermarkJob } from './watermark-job.interface';
+import { FeatureType } from "../agents/agent-features/entites/feature.entity";
 
 @Injectable()
 export class WatermarksService {
@@ -16,9 +17,18 @@ export class WatermarksService {
     }
 
     async addWatermarkJob(user: User, photo: Photo, opacity: number) {
+        await user.agent?.init();
+        await user.agent?.watermark?.init();
+        await user.agent?.features.init();
+
+        const watermark = user.agent?.hasFeature(FeatureType.Branding) && user.agent?.watermark
+            ? user.agent.watermark
+            : null;
+
         await this.watermarkQueue.add({
             photo,
-            watermark: null,
+            watermark,
+            opacity,
         });
     }
 

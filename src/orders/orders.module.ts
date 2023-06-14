@@ -26,9 +26,9 @@ import { CartsModule } from '../carts/carts.module';
         DirectoriesModule,
         CartsModule,
     ],
-    exports: [],
     controllers: [OrderPhotosController, OrderAlbumsController, OrdersController],
     providers: [OrderPhotosService, OrderAlbumsService, OrdersService],
+    exports: [OrdersService],
 })
 
 export class OrdersModule {

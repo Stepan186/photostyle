@@ -19,10 +19,10 @@ export class AlbumComposition extends BaseEntity<AlbumComposition, 'id'> {
     @PrimaryKey()
     id: number;
 
-    @ManyToOne(() => Album, { eager: true })
+    @ManyToOne(() => Album, { eager: true, onDelete: 'cascade' })
     album: Album;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: 'cascade' })
     owner: User;
 
     @OneToMany(() => AlbumCompositionRegion, 'composition', { eager: true })
@@ -30,6 +30,10 @@ export class AlbumComposition extends BaseEntity<AlbumComposition, 'id'> {
 
     @ManyToMany(() => AlbumPage, undefined, { eager: true })
     paidPages = new Collection<AlbumPage>(this);
+
+    @Property({ type: 'json', default: '[]' })
+    pagesFields: { page: number, fields: { name: string, value: string }[] }[];
+
 
     get usedPages() {
         const pages = this.album.pages.getItems().filter((page) => !+page.price);

@@ -10,6 +10,8 @@ import { StorePhotoDto } from './dto/store-photo.dto';
 import { DirectoriesService } from '../directories/directories.service';
 import { WatermarksService } from '../watermarks/watermarks.service';
 import { ProjectUsersService } from '../projects/project-users/project-users.service';
+import { Action } from "../auth/types/action";
+import { ProjectPermissionType } from "../projects/project-permissions/entities/project-permission.entity";
 
 @Injectable()
 export class PhotosService {
@@ -37,9 +39,14 @@ export class PhotosService {
     // return { items, count };
     // }
 
-    async get(dto: GetPhotoDto, currentUser: User) {
+    async get(dto: GetPhotoDto, currentUser: User, action: Action = 'view') {
         const res = await this.repo.findOneOrFail({ id: dto.id }, { populate: ['original', 'watermarked', 'directory'] });
-        await this.projectUsersService.checkPermissions(res.directory.project, currentUser);
+
+        if (action === 'edit') {
+            await this.projectUsersService.checkPermissions(res.directory.project, currentUser, ProjectPermissionType.UploadPhotos);
+        } else {
+            await this.projectUsersService.checkPermissions(res.directory.project, currentUser);
+        }
         return res;
     }
 
@@ -80,11 +87,13 @@ export class PhotosService {
         dto: DeletePhotoDto,
         currentUser: User,
     ): Promise<Photo> {
-        const item = await this.get(dto, currentUser);
+        const item = await this.get(dto, currentUser, 'edit');
         const uploads = [item.original];
+
         if (item.watermarked) {
             uploads.push(item.watermarked);
         }
+
         await this.uploadsService.removeMany(uploads);
         return item;
     }

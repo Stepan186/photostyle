@@ -5,7 +5,7 @@ import {
     IMailNotifiable,
 } from '../../../notifications/channels/email/email-notification.channel';
 import { Order } from '../entities/order.entity';
-import { createMailgen } from '../../../email-utils/create-mailgen';
+import { createMailgen } from '../../../email-utils/helpers/create-mailgen';
 
 export class OrderCompletedNotification extends BaseNotification implements IEmailNotification {
     order: Order;

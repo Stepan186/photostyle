@@ -8,6 +8,8 @@ import { PhoneVerificationService } from '../phone-utils/phone-verification.serv
 import { EmailVerificationService } from '../email-utils/email-verification.service';
 import { omit } from '@1creator/common';
 import { GetUserDto } from "./dto/get-user.dto";
+import { UpdateAgentDto } from "./dto/update-agent.dto";
+import { Agent } from "../agents/agents/entities/agent.entity";
 
 @Injectable()
 export class ProfileService {
@@ -22,7 +24,7 @@ export class ProfileService {
 
     async get(dto: GetUserDto): Promise<User> {
         return await this.repo.findOneOrFail(dto,
-            { populate: ['image', 'agent'], cache: 5000 },
+            { populate: ['image', 'agent.watermark'], cache: 5000 },
         );
     }
 
@@ -45,19 +47,23 @@ export class ProfileService {
             dto.password = await this.cryptoService.bcrypt(dto.password);
         }
 
-        user.assign(omit(dto, ['emailVerificationCode', 'phoneVerificationCode', 'agent']));
-
-        if (dto.agent) {
-            if (user.agent) {
-                user.agent.assign(dto.agent);
-            } else {
-                user.assign({ agent: dto.agent });
-            }
-        }
+        user.assign(omit(dto, ['emailVerificationCode', 'phoneVerificationCode']));
 
         await this.repo.getEntityManager().flush();
 
         await this.repo.populate(user, ['image'], { refresh: true });
         return user;
+    }
+
+    async updateAgent(user: User, dto: UpdateAgentDto): Promise<Agent> {
+        if (user.agent) {
+            user.agent.assign(dto);
+        } else {
+            user.assign({ agent: dto });
+        }
+
+        await this.repo.getEntityManager().flush();
+
+        return user.agent!;
     }
 }

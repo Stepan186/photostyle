@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { ProfileService } from './profile.service';
 import { TakeUser } from '@1creator/backend';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateAgentDto } from "./dto/update-agent.dto";
 
 @Controller('profile')
 export class ProfileController {
@@ -20,5 +21,11 @@ export class ProfileController {
     @Post('update')
     async update(@TakeUser() user: User, @Body() dto: UpdateProfileDto) {
         return this.profileService.update(user, dto);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post('updateAgent')
+    async updateAgent(@TakeUser() user: User, @Body() dto: UpdateAgentDto) {
+        return this.profileService.updateAgent(user, dto);
     }
 }

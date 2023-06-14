@@ -8,7 +8,6 @@ import { PricesService } from '../../prices/prices.service';
 import { DirectoriesService } from '../../directories/directories.service';
 import { StoreCartDto } from './dto/store-cart.dto';
 import { createValidationException } from '@1creator/backend';
-import { ProjectPrepaymentsService } from '../../projects/projects/project-prepayments.service';
 import { Action } from '../../auth/types/action';
 import { BadRequestException } from '@nestjs/common';
 
@@ -20,7 +19,6 @@ export class CartsService {
         private repo: EntityRepository<Cart>,
         private pricesService: PricesService,
         private readonly directoriesService: DirectoriesService,
-        private projectPrepaymentsService: ProjectPrepaymentsService,
     ) {
     }
 
@@ -41,6 +39,7 @@ export class CartsService {
                 'albums.composition.paidPages.regions',
                 'albums.composition.regions.region',
                 'photos.photo.watermarked',
+                'photos.photo.directory.disabledPriceItems',
                 'photos.priceItem',
             ],
         );
@@ -52,7 +51,7 @@ export class CartsService {
         cart.project.currentUser = currentUser;
         try {
             cart.activePriceList = await this.pricesService.getProjectActivePriceList(cart.project);
-        }catch (e) {
+        } catch (e) {
 
         }
 

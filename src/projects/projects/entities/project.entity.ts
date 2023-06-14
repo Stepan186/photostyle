@@ -16,8 +16,10 @@ import { ProjectPrice } from './project-price.entity';
 import { Order } from '../../../orders/order/entities/order.entity';
 import { ProjectPermissionType } from '../../project-permissions/entities/project-permission.entity';
 import { ProjectGroup } from '../../project-groups/entities/project-group.entity';
-import { ProjectRole } from "../../project-users/entities/project-role.enum";
-import * as process from "process";
+import { ProjectRole } from '../../project-users/entities/project-role.enum';
+import * as process from 'process';
+import { ProjectPrepayment } from '../../../project-prepayments/entities/project-prepayment.entity';
+import { PaymentStatus } from '../../../payments/entities/payment.entity';
 
 export class ProjectDetails {
     directoriesCount = 0;
@@ -35,7 +37,8 @@ export class Project extends BaseEntity<Project, 'id'> {
         | 'permissions'
         | 'scope'
         | 'qr'
-        | 'prepayment';
+        | 'prepayment'
+        | 'prepaymentBalance';
 
     @PrimaryKey()
     id: number;
@@ -115,9 +118,6 @@ export class Project extends BaseEntity<Project, 'id'> {
     @Property({ onUpdate: () => new Date() })
     updatedAt = new Date();
 
-    // @ManyToMany({ entity: () => User, mappedBy: u => u.projects })
-    // users = new Collection<User>(this);
-
     @OneToMany(() => ProjectUser, pu => pu.project, { hidden: true })
     usersPivot = new Collection<ProjectUser>(this);
 
@@ -126,6 +126,9 @@ export class Project extends BaseEntity<Project, 'id'> {
 
     @OneToMany(() => Album, pa => pa.project, { orphanRemoval: true })
     albums = new Collection<Album>(this);
+
+    @OneToMany(() => ProjectPrepayment, pp => pp.project)
+    prepayments = new Collection<ProjectPrepayment>(this);
 
     @Property({ persist: false })
     get isFavorite() {
@@ -166,8 +169,22 @@ export class Project extends BaseEntity<Project, 'id'> {
     }
 
     @Property({ persist: false })
+    get prepaymentBalance() {
+        if (!this.prepayments.isInitialized()) {
+            return 0;
+        }
+
+        return this.prepayments.getItems().reduce((acc, i) => {
+            if (i.status === PaymentStatus.Succeeded) {
+                acc += +i.total;
+            }
+            return acc;
+        }, 0);
+    }
+
+    @Property({ persist: false })
     get waitingForPrepayment() {
-        return this.prepayment > 0;
+        return this.prepaymentBalance < this.prepayment;
     }
 
     currentUser?: User;

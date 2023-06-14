@@ -17,7 +17,6 @@ import { PhotosService } from '../../photos/photos.service';
 import { ProjectUsersService } from '../../projects/project-users/project-users.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AlbumCompleteEvent } from './events';
-import { ProjectPermissionType } from '../../projects/project-permissions/entities/project-permission.entity';
 import { PaginationDto } from '@1creator/backend';
 
 
@@ -40,7 +39,7 @@ export class AlbumsService {
         const where: FilterQuery<Album> = {
             project: {
                 id: dto.project,
-                usersPivot: {user},
+                usersPivot: { user },
             },
         };
 

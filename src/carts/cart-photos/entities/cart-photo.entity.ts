@@ -5,7 +5,7 @@ import { PriceItem } from '../../../prices/entities/price-item.entity';
 
 @Entity()
 export class CartPhoto extends BaseEntity<CartPhoto, 'cart' | 'photo' | 'priceItem'> {
-    [OptionalProps]: 'price' | 'sale' | 'salePercent';
+    [OptionalProps]: 'price' | 'sale' | 'salePercent' | 'allowedFormats';
     [PrimaryKeyType]?: [string, number, number];
 
     @ManyToOne(() => Cart, { primary: true, onDelete: 'cascade', hidden: true })
@@ -35,5 +35,11 @@ export class CartPhoto extends BaseEntity<CartPhoto, 'cart' | 'photo' | 'priceIt
     @Property({ persist: false })
     get salePercent(): number {
         return this.cart.salePercent;
+    }
+
+    @Property({ persist: false })
+    get allowedFormats(): PriceItem[] | undefined {
+        return this.cart.activePriceList?.items.getItems()
+            .filter(i => !this.photo.directory.disabledPriceItems.getItems().some(k => k.id === i.id));
     }
 }

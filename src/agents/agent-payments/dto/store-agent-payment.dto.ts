@@ -1,15 +1,15 @@
-import { StorePaymentDto } from '../../../payments/dto/store-payment.dto';
 import { IsArrayI18n, IsInI18n, IsNumberI18n, IsStringI18n } from '@1creator/backend';
-import { PaymentTableType } from '../../../payments/entities/payment.entity';
+import { PaymentType } from '../../../payments/entities/payment.entity';
 import { FeatureType } from '../../agent-features/entites/feature.entity';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 
-export class StoreAgentPaymentDto extends StorePaymentDto {
+export class StoreAgentPaymentDto {
+    @IsInI18n(Object.values(PaymentType))
+    type: PaymentType;
 
-    @IsInI18n(Object.values(PaymentTableType.Agent))
-    table: PaymentTableType.Agent;
-
+    @IsNumberI18n()
+    total: number;
 }
 
 export class OrderBundleDto {

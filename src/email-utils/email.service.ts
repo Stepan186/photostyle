@@ -1,19 +1,11 @@
 import * as process from 'process';
-import { createTransport, Transporter } from 'nodemailer';
+import { createTransport } from 'nodemailer';
+import { EmailSettingsService } from './email-settings/email-settings.service';
 
 export class EmailService {
-    transport: Transporter;
-
-    constructor() {
-        this.transport = createTransport({
-            host: process.env.MAIL_HOST,
-            port: +process.env.MAIL_PORT!,
-            secure: process.env.MAIL_ENCRYPTION === 'SSL',
-            auth: {
-                user: process.env.MAIL_USERNAME,
-                pass: process.env.MAIL_PASSWORD,
-            },
-        });
+    constructor(
+        private service: EmailSettingsService,
+    ) {
     }
 
     async send(opts: {
@@ -21,7 +13,20 @@ export class EmailService {
         html: string,
         subject: string
     }) {
-        await this.transport.sendMail({
+
+        const emailSettings = await this.service.get();
+
+        const transport = createTransport({
+            host: emailSettings.host,
+            port: +emailSettings.port,
+            secure: emailSettings.encryption === 'SSL',
+            auth: {
+                user: emailSettings.userName,
+                pass: emailSettings.password,
+            },
+        });
+
+        await transport.sendMail({
             from: process.env.MAIL_FROM,
             ...opts,
         });

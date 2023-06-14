@@ -1,8 +1,9 @@
-import { BaseEntity, Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
+import { BaseEntity, Entity, Enum, ManyToOne, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core';
+import { User } from '../../users/entities/user.entity';
 
 export enum PaymentType {
     Invoice = 'invoice',
-    AlfaBank = 'alfaBank'
+    Online = 'online'
 }
 
 export enum PaymentStatus {
@@ -15,7 +16,8 @@ export enum PaymentStatus {
 
 export enum PaymentTableType {
     Agent = 'agent',
-    Client = 'client'
+    Order = 'order',
+    ProjectPrepayment = 'project_prepayment'
 }
 
 @Entity({
@@ -23,6 +25,8 @@ export enum PaymentTableType {
     abstract: true,
 })
 export class Payment extends BaseEntity<Payment, 'uuid'> {
+    [OptionalProps]: 'createdAt' | 'updatedAt' | 'table' | 'kind';
+
     @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
     uuid: string;
 
@@ -35,21 +39,33 @@ export class Payment extends BaseEntity<Payment, 'uuid'> {
     @Enum(() => PaymentStatus)
     status: PaymentStatus;
 
+    @ManyToOne(() => User)
+    user: User;
+
     @Property()
     description: string;
 
     @Property({ type: 'decimal', precision: 7, scale: 2, default: 0, serializer: v => +v })
-    total: number;
+    total: number | string;
 
-    @Property({ type: 'json' })
-    bankPayload: JSON;
+    @Property({ type: 'json', nullable: true })
+    bankPayload?: JSON;
 
-    @Property()
-    paidAt: Date;
+    @Property({ nullable: true })
+    paidAt?: Date;
 
     @Property({ onUpdate: () => new Date() })
     updatedAt: Date = new Date();
 
     @Property()
     createdAt = new Date();
+
+    @Property({ persist: false })
+    get kind() {
+        return {
+            [PaymentTableType.Order]: 'Оплата заказа',
+            [PaymentTableType.ProjectPrepayment]: 'Предоплата за проект',
+            [PaymentTableType.Agent]: 'Пополнение баланса фотографа',
+        }[this.table];
+    }
 }

@@ -4,7 +4,7 @@ import {
     IEmailNotification,
     IMailNotifiable,
 } from '../../../notifications/channels/email/email-notification.channel';
-import { createMailgen } from '../../../email-utils/create-mailgen';
+import { createMailgen } from '../../../email-utils/helpers/create-mailgen';
 import * as process from 'process';
 
 export class EmailVerificationNotification extends BaseNotification implements IEmailNotification {

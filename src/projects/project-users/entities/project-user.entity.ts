@@ -3,6 +3,7 @@ import {
     Collection,
     Entity,
     Enum,
+    Index,
     ManyToMany,
     ManyToOne,
     OptionalProps,
@@ -16,13 +17,11 @@ import { localizeProjectRole, ProjectRole } from './project-role.enum';
 import { ProjectPermission } from '../../project-permissions/entities/project-permission.entity';
 
 @Unique({ properties: ['user', 'project'] })
+// @Index({ properties: ['user', 'role'] })
 @Entity()
 export class ProjectUser extends BaseEntity<ProjectUser, 'user' | 'project'> {
     [PrimaryKeyType]: [string, number];
-    [OptionalProps]: 'localizedRole' | 'isFavorite';
-
-    // @PrimaryKey()
-    // id: number;
+    [OptionalProps]: 'localizedRole' | 'isFavorite' | 'prepaymentBalance' | 'prepaymentUsed';
 
     @ManyToOne(() => User, { onDelete: 'cascade', primary: true })
     user: User;
@@ -43,6 +42,12 @@ export class ProjectUser extends BaseEntity<ProjectUser, 'user' | 'project'> {
 
     @Property({ default: false })
     isFavorite: boolean;
+
+    @Property({ type: 'decimal', precision: 7, scale: 2, default: 0, serializer: v => +v })
+    prepaymentBalance: string;
+
+    @Property({ type: 'decimal', precision: 7, scale: 2, default: 0, serializer: v => +v })
+    prepaymentUsed: string;
 
     @Property({ type: 'uuid' })
     inviteUuid?: string | null;

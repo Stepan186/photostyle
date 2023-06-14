@@ -3,6 +3,7 @@ import {
     Check,
     Collection,
     Entity,
+    ManyToOne,
     OneToMany,
     OneToOne,
     OptionalProps,
@@ -43,7 +44,7 @@ export class User extends BaseEntity<User, 'uuid'> {
     @Property({ nullable: true })
     telegramChatId?: string;
 
-    @OneToOne(() => Agent)
+    @ManyToOne(() => Agent)
     agent?: Agent;
 
     @Property({ hidden: true })

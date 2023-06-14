@@ -8,7 +8,8 @@ import { DeleteUserDto } from './dto/delete-user.dto';
 import { User } from './entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { TakeUser } from '@1creator/backend';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { AdminGuard } from '../auth/guards/admin.guard';
+import { AgentGuard } from '../agents/guards/agent.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -22,24 +23,25 @@ export class UsersController {
     }
 
     @Post('/getMany')
-    getMany(@Body() dto: GetUsersDto) {
-        return this.service.getMany(dto);
+    @UseGuards(AgentGuard)
+    getMany(@Body() dto: GetUsersDto, @TakeUser() user: User) {
+        return this.service.getMany(dto, user);
     }
 
     @Post('/store')
-    @UseGuards(AuthGuard)
+    @UseGuards(AdminGuard)
     store(@Body() dto: StoreUserDto, @TakeUser() user: User) {
         return this.service.store(dto, user);
     }
 
     @Post('/update')
-    @UseGuards(AuthGuard)
+    @UseGuards(AdminGuard)
     update(@Body() dto: UpdateUserDto, @TakeUser() user: User) {
         return this.service.update(dto.uuid, dto, user);
     }
 
     @Post('/remove')
-    @UseGuards(AuthGuard)
+    @UseGuards(AdminGuard)
     remove(@Body() dto: DeleteUserDto, @TakeUser() user: User) {
         return this.service.remove(dto, user);
     }

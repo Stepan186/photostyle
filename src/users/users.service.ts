@@ -10,29 +10,50 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { FilterQuery } from '@mikro-orm/core';
 import { Agent } from '../agents/agents/entities/agent.entity';
+import { createValidationException } from '@1creator/backend';
+import { ProjectRole } from '../projects/project-users/entities/project-role.enum';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User) private repo: EntityRepository<User>,
         private readonly cryptoService: CryptoService,
-        // private readonly cartService: CartService,
     ) {
     }
 
-    async getMany(dto: GetUsersDto) {
+    async getMany(dto: GetUsersDto, currentUser: User) {
         const where: FilterQuery<User> = {};
+        const populate: string[] = [];
+
         if (dto.uuid) {
             where.uuid = { $in: dto.uuid };
         }
+
+        if (!currentUser.isAdmin) {
+            where.projectsPivot = {
+                project: {
+                    usersPivot: {
+                        role: [ProjectRole.Owner, ProjectRole.Employee, ProjectRole.Organizer],
+                        user: currentUser,
+                    },
+                },
+            };
+        }
+
+        if (dto.relations?.includes('orders')) {
+            populate.push('orders');
+        }
+
         const [items, count] = await this.repo.findAndCount(where, {
             limit: dto.limit,
             offset: dto.offset,
+            populate: populate as never[],
         });
         return { items, count };
     }
 
     async get(dto: GetUserDto) {
+        //todo protect
         return await this.repo.findOneOrFail(dto);
     }
 
@@ -47,9 +68,13 @@ export class UsersService {
         }
     }
 
-    async isExists(dto: GetUserDto) {
+    async isExists(dto: GetUserDto, exceptUuid?: string) {
         try {
-            await this.get(dto);
+            const where: FilterQuery<User> = dto;
+            if (exceptUuid) {
+                where.uuid = { $ne: exceptUuid };
+            }
+            await this.repo.findOneOrFail(where);
             return true;
         } catch (e) {
             return false;
@@ -57,6 +82,10 @@ export class UsersService {
     }
 
     async store(dto: StoreUserDto, _currentUser?: User): Promise<User> {
+        if (await this.isExists({ email: dto.email })) {
+            throw createValidationException({ email: ['Данный электронный адрес уже занят'] });
+        }
+
         if (dto.password) {
             dto.password = await this.cryptoService.bcrypt(dto.password);
         }
@@ -68,17 +97,18 @@ export class UsersService {
 
         await this.repo.getEntityManager().persistAndFlush(item);
 
-        // if (!dto.isAgent) {
-        //     await this.cartService.store(item);
-        // }
         return item;
     }
 
     async update(
         uuid: string,
         dto: UpdateUserDto,
-        currentUser: User,
+        _currentUser: User,
     ): Promise<User> {
+        if (dto.email && await this.isExists({ email: dto.email }, uuid)) {
+            throw createValidationException({ email: ['Данный электронный адрес уже занят'] });
+        }
+
         if (dto.password) {
             dto.password = await this.cryptoService.bcrypt(dto.password);
         }
@@ -88,7 +118,7 @@ export class UsersService {
 
     async remove(dto: DeleteUserDto, currentUser: User): Promise<User> {
         const item = await this.get({ uuid: dto.uuid });
-        await this.repo.remove(item);
+        await this.repo.getEntityManager().remove(item);
         return item;
     }
 }

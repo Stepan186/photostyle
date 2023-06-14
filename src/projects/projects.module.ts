@@ -10,9 +10,11 @@ import { AlbumsModule } from '../albums/albums.module';
 import { Album } from '../albums/albums/entities/album.entity';
 import { PriceList } from '../prices/entities/price-list.entity';
 import { UsersModule } from '../users/users.module';
-import { ProjectPrepaymentsService } from './projects/project-prepayments.service';
 import { ProjectPermission } from './project-permissions/entities/project-permission.entity';
 import { ProjectPermissionsService } from './project-permissions/project-permissions.service';
+import { ProjectGroupsController } from "./project-groups/project-groups.controller";
+import { ProjectGroupsService } from "./project-groups/project-groups.service";
+import { ProjectGroup } from "./project-groups/entities/project-group.entity";
 
 @Global()
 @Module({
@@ -23,13 +25,14 @@ import { ProjectPermissionsService } from './project-permissions/project-permiss
             Album,
             PriceList,
             ProjectPermission,
+            ProjectGroup,
         ]),
         AlbumsModule,
         UsersModule,
     ],
-    controllers: [ProjectsController, ProjectUsersController],
-    providers: [ProjectsService, ProjectUsersService, ProjectPrepaymentsService, ProjectPermissionsService],
-    exports: [ProjectsService, ProjectUsersService, ProjectPrepaymentsService],
+    controllers: [ProjectsController, ProjectUsersController, ProjectGroupsController],
+    providers: [ProjectsService, ProjectUsersService, ProjectPermissionsService, ProjectGroupsService],
+    exports: [ProjectsService, ProjectUsersService],
 })
 export class ProjectsModule {
 }

@@ -16,6 +16,7 @@ import { PricesModule } from '../prices/prices.module';
 import { PhotosModule } from '../photos/photos.module';
 import { DirectoriesModule } from '../directories/directories.module';
 import { ProjectsModule } from '../projects/projects.module';
+import { PagesFieldsValidationService } from './cart-albums/helpers/pages-fields-validation.service';
 
 @Module({
     imports: [
@@ -28,7 +29,7 @@ import { ProjectsModule } from '../projects/projects.module';
     ],
     exports: [CartsService],
     controllers: [CartPhotosController, CartAlbumsController, CartsController],
-    providers: [CartPhotosService, CartAlbumsService, CartsService],
+    providers: [CartPhotosService, CartAlbumsService, CartsService, PagesFieldsValidationService],
 })
 
 export class CartsModule {

@@ -1,14 +1,18 @@
+import { PaymentTableType, PaymentType } from '../entities/payment.entity';
 import { IsInI18n, IsNumberI18n, IsStringI18n } from '@1creator/backend';
-import { PaymentType } from '../entities/payment.entity';
 
 export class StorePaymentDto {
 
     @IsInI18n(Object.values(PaymentType))
     type: PaymentType;
 
+    @IsNumberI18n()
+    total: number;
+
     @IsStringI18n()
     description: string;
 
-    @IsNumberI18n()
-    total: number;
+    @IsInI18n(Object.values(PaymentTableType))
+    table: PaymentTableType;
+
 }

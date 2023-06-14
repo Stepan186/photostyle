@@ -5,7 +5,7 @@ import {
     IMailNotifiable,
 } from '../../../notifications/channels/email/email-notification.channel';
 import { ProjectUser } from '../entities/project-user.entity';
-import { createMailgen } from '../../../email-utils/create-mailgen';
+import { createMailgen } from '../../../email-utils/helpers/create-mailgen';
 import { ProjectRole } from '../entities/project-role.enum';
 
 export class InviteNotification extends BaseNotification implements IEmailNotification {

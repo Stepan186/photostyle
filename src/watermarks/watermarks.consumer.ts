@@ -20,7 +20,7 @@ export class WatermarksConsumer {
     async process(job: Job<IWatermarkJob>) {
         const watermarked = await this.overlayWatermark(job.data.photo.original,
             job.data.watermark,
-            job.data.photo.directory.watermarkOpacity);
+            job.data.opacity);
         await this.orm.em.nativeUpdate(Photo, { id: job.data.photo.id }, { watermarked });
     }
 
